@@ -1,6 +1,6 @@
 # -AAPL-SEC-Financial-Facts-and-Filing
-Financial Data Cleaning & EDA Pipeline
-A Python pipeline that automatically cleans, analyzes, and visualizes raw financial data. It handles two types of data: Stock Prices (OHLCV) and Company Financials (SEC Fundamentals).
+# Financial Data Cleaning & EDA Pipeline
+# A Python pipeline that automatically cleans, analyzes, and visualizes raw financial data. It handles two types of data: # Stock Prices (OHLCV) and Company Financials (SEC Fundamentals).
 
 📌 Overview
 Raw financial data is messy. It contains missing values, illogical entries, duplicate reports, and extreme outliers. This pipeline solves that by:
