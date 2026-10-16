@@ -13,7 +13,7 @@
 
 **A smart pipeline that cleans, analyzes, and visualizes messy financial data — automatically.**
 
-[Overview](#-overview) • [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [How It Works](#-how-it-works) • [Output](#-output)
+[Overview](#-overview) • [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [How It Works](#-how-it-works) • [Output](#-output) • [Contact](#-contact)
 
 </div>
 
@@ -25,8 +25,6 @@
 
 This pipeline solves that problem. It **automatically detects** whether your data is **Stock Prices** or **Company Financials**, then applies the right cleaning strategy for each.
 
-<div align="center">
-
 | 🎯 Goal | ✅ Result |
 |:--------|:---------|
 | Detect data type automatically | Stock OHLCV or SEC Fundamentals |
@@ -35,15 +33,9 @@ This pipeline solves that problem. It **automatically detects** whether your dat
 | Generate visual insights | 6-panel EDA figure |
 | Save clean output | `df_clean.csv` ready for ML |
 
-</div>
-
 ---
 
 ## ✨ Features
-
-<table>
-<tr>
-<td width="50%">
 
 ### 🟢 Stock Price Mode
 - 📅 Auto datetime parsing
@@ -53,9 +45,6 @@ This pipeline solves that problem. It **automatically detects** whether your dat
 - 🚩 Flags outliers with IQR + Z-Score
 - 🛡️ **Never deletes real crashes**
 
-</td>
-<td width="50%">
-
 ### 🔵 SEC Fundamentals Mode
 - 🏢 Handles restated filings
 - 🔄 Unifies changing revenue tags
@@ -64,67 +53,121 @@ This pipeline solves that problem. It **automatically detects** whether your dat
 - ⚠️ Keeps structural nulls as-is
 - 🎯 Flags revenue & growth outliers
 
-</td>
-</tr>
-</table>
+---
+
+## 🛠️ Installation
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/financial-eda-pipeline.git
+cd financial-eda-pipeline
+```
+
+### 2. Install Dependencies
+```bash
+pip install pandas numpy matplotlib seaborn scipy
+```
+
+### 3. Requirements
+- Python 3.8+
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- scipy
 
 ---
 
-## 🛠️ Hierarchy
-Expected Folder Structure
+## 🚀 Usage
+
+### Basic Run
+```bash
+python eda_pipeline.py
+```
+
+### Custom File Path
+```bash
+python eda_pipeline.py path/to/your/data.csv
+```
+
+### Expected Folder Structure
+
+```text
 📦 financial-eda-pipeline
  ┣ 📜 eda_pipeline.py
  ┣ 📂 Dataset
  ┃ ┗ 📄 financial_facts.csv
  ┣ 📄 df_clean.csv          ← generated
- ┗ 📄 eda_figure.png        ← generated
+ ┣ 📄 eda_figure.png        ← generated
+ ┗ 📄 README.md             ← this file
+```
 
-🧠 How It Works
+---
 
-📥 Step 1 — Load & Detect
+## 🧠 How It Works
 
-Reads the CSV file using pandas.
-Prints shape, dtypes, missing %, and duplicate count.
-Auto-detects data type based on column names.
+```mermaid
+flowchart TD
+    A[📂 Load CSV] --> B{Detect Mode}
+    B -->|Has Date, Close, Volume| C[🟢 Stock Price Mode]
+    B -->|Otherwise| D[🔵 SEC Fundamentals Mode]
+    C --> E[Clean Prices & Volume]
+    D --> F[Clean Filings & Revenue]
+    E --> G[📊 Descriptive Stats]
+    F --> G
+    G --> H[📈 Generate 6 Charts]
+    H --> I[💾 Save df_clean.csv]
+```
 
-🧹 Step 2 — Clean the Data
+### 📥 Step 1 — Load & Detect
+- Reads the CSV file using `pandas`.
+- Prints shape, dtypes, missing %, and duplicate count.
+- Auto-detects data type based on column names.
 
-1.Stock Mode:
- Issue	Action
- Missing prices	Forward-fill
- Missing volume	Median
- High < Low	Delete
- Volume spikes	Flag only
- Price crashes (>5σ)	Flag only
+### 🧹 Step 2 — Clean the Data
 
-2.SEC Mode:
- Issue	Action
- Duplicate filings	Keep latest
- Conflicting values	Use restatement
- Missing Q4	Calculate
- Revenue tag change	Unify
+**1. Stock Mode:**
 
-📊 Step 3 — Statistics
+| Issue | Action |
+|:------|:-------|
+| Missing prices | Forward-fill |
+| Missing volume | Median |
+| `High < Low` | Delete |
+| Volume spikes | Flag only |
+| Price crashes (>5σ) | Flag only |
 
-Calculates: Mean, Median, Std, Skewness, Kurtosis
-Prints plain-English interpretation of distribution shape.
+**2. SEC Mode:**
 
-📈 Step 4 — Visualize
+| Issue | Action |
+|:------|:-------|
+| Duplicate filings | Keep latest |
+| Conflicting values | Use restatement |
+| Missing Q4 | Calculate |
+| Revenue tag change | Unify |
+
+### 📊 Step 3 — Statistics
+- Calculates: **Mean, Median, Std, Skewness, Kurtosis**
+- Prints plain-English interpretation of distribution shape.
+
+### 📈 Step 4 — Visualize
 
 Generates a 6-panel figure:
- Histogram — Main variable
- Histogram — Secondary variable
- Box plot — Secondary variable
- Box plot — Returns / Growth
- Time series — Main variable
- Time series — Secondary variable
+1. Histogram — Main variable
+2. Histogram — Secondary variable
+3. Box plot — Secondary variable
+4. Box plot — Returns / Growth
+5. Time series — Main variable
+6. Time series — Secondary variable
 
-💾 Step 5 — Output
+### 💾 Step 5 — Output
+- Saves `df_clean.csv`
+- Prints final shape and first 5 rows
 
-Saves df_clean.csv
-Prints final shape and first 5 rows
+---
 
-📊 Sample Output
+## 📊 Sample Output
+
+```text
 Shape: (5000, 7)
 Detected mode: PRICE (OHLCV)
 Unparseable dates: 0
@@ -137,36 +180,81 @@ Descriptive statistics:
 Close      152.34    150.21   25.67    0.45    1.23
 Volume   5234123   4100000  2.1e6    2.87    9.45
 
-Close: skew=0.45 (roughly symmetric), 
+Close: skew=0.45 (roughly symmetric),
        excess kurtosis=1.23 (fat tails / shock-prone)
-🎯 Key Design Decisions
+```
+
+---
+
+## 🎯 Key Design Decisions
+
+| ✅ Principle | 💡 Why |
+|:-------------|:-------|
+| **Flag, Don't Delete** | Extreme values in finance are real events, not errors |
+| **No Fake Data** | Missing structural values stay missing |
+| **Latest Restated Values** | Companies re-file reports; use the newest |
+| **Smart Imputation** | `ffill` for prices, `median` for volume |
+
+---
+
+## 📁 Output Files
+
+| 📄 File | 📝 Description |
+|:--------|:---------------|
+| `df_clean.csv` | Cleaned dataset ready for analysis |
+| `eda_figure.png` | 6-panel visualization of key patterns |
+
+---
+
+## 🧰 Tech Stack
+
 <div align="center">
-✅ Principle	💡 Why
-Flag, Don't Delete	Extreme values in finance are real events, not errors
-No Fake Data	Missing structural values stay missing
-Latest Restated Values	Companies re-file reports; use the newest
-Smart Imputation	ffill for prices, median for volume
- 
-📁 Output Files
-📄 File	📝 Description
-df_clean.csv	Cleaned dataset ready for analysis
-eda_figure.png	6-panel visualization of key patterns
-🧰 Tech Stack
-🤝 Contributing
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white)
+![NumPy](https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-11557c?style=flat-square&logo=python&logoColor=white)
+![Seaborn](https://img.shields.io/badge/Seaborn-3776AB?style=flat-square&logo=python&logoColor=white)
+
+</div>
+
+---
+
+## 🤝 Contributing
+
 Contributions are welcome! Feel free to:
 
-🍴 Fork the repository
+1. 🍴 Fork the repository
+2. 🌿 Create a feature branch
+3. 💾 Commit your changes
+4. 🚀 Push and open a Pull Request
 
-🌿 Create a feature branch
+---
 
-💾 Commit your changes
+## 📜 License
 
-🚀 Push and open a Pull Request
+This project is licensed under the **MIT License** — free to use and modify.
 
-📜 License
-This project is licensed under the MIT License — free to use and modify.
+---
 
-📧 Contact
+## 📧 Contact
+
 <div align="center">
 
-⭐ If you found this project useful, please give it a star!
+**Abdalla Mohamed**
+
+[![Email](https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:abdallamohamed8354@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/abdalla-mohamed-farouk)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white)](https://(https://github.com/Abdalla820))
+
+</div>
+
+---
+
+<div align="center">
+
+### ⭐ If you found this project useful, please give it a star!
+
+**Made with ❤️ and Python**
+
+</div>
