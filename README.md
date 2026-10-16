@@ -70,93 +70,61 @@ This pipeline solves that problem. It **automatically detects** whether your dat
 
 ---
 
-## 🛠️ Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/financial-eda-pipeline.git
-cd financial-eda-pipeline
-
-# Install dependencies
-pip install pandas numpy matplotlib seaborn scipy
-🚀 Usage
-Basic Run
-bash
-python eda_pipeline.py
-Custom File Path
-bash
-python eda_pipeline.py path/to/your/data.csv
+## 🛠️ Hierarchy
 Expected Folder Structure
-text
 📦 financial-eda-pipeline
  ┣ 📜 eda_pipeline.py
  ┣ 📂 Dataset
  ┃ ┗ 📄 financial_facts.csv
  ┣ 📄 df_clean.csv          ← generated
  ┗ 📄 eda_figure.png        ← generated
+
 🧠 How It Works
 
+📥 Step 1 — Load & Detect
 
-
-
-
-
-
-
-
-
-
-Step-by-Step Breakdown
-<details> <summary><b>📥 Step 1 — Load & Detect</b> (click to expand)</summary>
 Reads the CSV file using pandas.
-
 Prints shape, dtypes, missing %, and duplicate count.
-
 Auto-detects data type based on column names.
 
-</details><details> <summary><b>🧹 Step 2 — Clean the Data</b> (click to expand)</summary>
-Stock Mode:
+🧹 Step 2 — Clean the Data
 
-Issue	Action
-Missing prices	Forward-fill
-Missing volume	Median
-High < Low	Delete
-Volume spikes	Flag only
-Price crashes (>5σ)	Flag only
-SEC Mode:
+1.Stock Mode:
+ Issue	Action
+ Missing prices	Forward-fill
+ Missing volume	Median
+ High < Low	Delete
+ Volume spikes	Flag only
+ Price crashes (>5σ)	Flag only
 
-Issue	Action
-Duplicate filings	Keep latest
-Conflicting values	Use restatement
-Missing Q4	Calculate
-Revenue tag change	Unify
-</details><details> <summary><b>📊 Step 3 — Statistics</b> (click to expand)</summary>
+2.SEC Mode:
+ Issue	Action
+ Duplicate filings	Keep latest
+ Conflicting values	Use restatement
+ Missing Q4	Calculate
+ Revenue tag change	Unify
+
+📊 Step 3 — Statistics
+
 Calculates: Mean, Median, Std, Skewness, Kurtosis
 Prints plain-English interpretation of distribution shape.
 
-</details><details> <summary><b>📈 Step 4 — Visualize</b> (click to expand)</summary>
+📈 Step 4 — Visualize
+
 Generates a 6-panel figure:
+ Histogram — Main variable
+ Histogram — Secondary variable
+ Box plot — Secondary variable
+ Box plot — Returns / Growth
+ Time series — Main variable
+ Time series — Secondary variable
 
-Histogram — Main variable
+💾 Step 5 — Output
 
-Histogram — Secondary variable
-
-Box plot — Secondary variable
-
-Box plot — Returns / Growth
-
-Time series — Main variable
-
-Time series — Secondary variable
-
-</details><details> <summary><b>💾 Step 5 — Output</b> (click to expand)</summary>
 Saves df_clean.csv
-
 Prints final shape and first 5 rows
 
-</details>
 📊 Sample Output
-text
 Shape: (5000, 7)
 Detected mode: PRICE (OHLCV)
 Unparseable dates: 0
@@ -184,15 +152,6 @@ Smart Imputation	ffill for prices, median for volume
 df_clean.csv	Cleaned dataset ready for analysis
 eda_figure.png	6-panel visualization of key patterns
 🧰 Tech Stack
-<div align="center">
-https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white
-https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white
-https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white
-https://img.shields.io/badge/Matplotlib-11557c?style=flat-square&logo=python&logoColor=white
-https://img.shields.io/badge/Seaborn-3776AB?style=flat-square&logo=python&logoColor=white
-https://img.shields.io/badge/SciPy-8CAAE6?style=flat-square&logo=scipy&logoColor=white
-
-</div>
 🤝 Contributing
 Contributions are welcome! Feel free to:
 
@@ -209,15 +168,9 @@ This project is licensed under the MIT License — free to use and modify.
 
 📧 Contact
 <div align="center">
-Your Name
 
 https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white
 https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
 
-</div>
-<div align="center">
 ⭐ If you found this project useful, please give it a star!
-Made with ❤️ and Python
-
-</div> ```
