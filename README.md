@@ -26,6 +26,7 @@ project/
 ├── df_clean.csv             # Output: Cleaned data
 ├── eda_figure.png           # Output: 6-panel visualization
 └── README.md                # This file
+
 🚀 How to Run
 1. Install Requirements
 bash
