@@ -1,119 +1,161 @@
-# -AAPL-SEC-Financial-Facts-and-Filing
-# Financial Data Cleaning & EDA Pipeline
-# A Python pipeline that automatically cleans, analyzes, and visualizes raw financial data. It handles two types of data: # Stock Prices (OHLCV) and Company Financials (SEC Fundamentals).
+<div align="center">
 
-📌 Overview
-Raw financial data is messy. It contains missing values, illogical entries, duplicate reports, and extreme outliers. This pipeline solves that by:
+# 💰 Financial Data Cleaning & EDA Pipeline
 
-Detecting the type of data automatically.
+### 🚀 Automating Financial Data Integrity with Python
 
-Cleaning errors and filling gaps intelligently.
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org/)
+[![Matplotlib](https://img.shields.io/badge/Matplotlib-11557c?style=for-the-badge&logo=python&logoColor=white)](https://matplotlib.org/)
+[![Seaborn](https://img.shields.io/badge/Seaborn-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://seaborn.pydata.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-Flagging outliers without deleting real market events.
+**A smart pipeline that cleans, analyzes, and visualizes messy financial data — automatically.**
 
-Visualizing the data with 6 professional charts.
+[Overview](#-overview) • [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [How It Works](#-how-it-works) • [Output](#-output)
 
-Saving a clean CSV file ready for machine learning.
+</div>
 
-📂 Project Structure
-text
-project/
-│
-├── eda_pipeline.py          # Main script
-├── Dataset/
-│   └── financial_facts.csv  # Input data (you provide this)
-│
-├── df_clean.csv             # Output: Cleaned data
-├── eda_figure.png           # Output: 6-panel visualization
-└── README.md                # This file
+---
 
-🚀 How to Run
-1. Install Requirements
-bash
+## 📖 Overview
+
+> *"Raw financial data is messy. It contains missing values, illogical entries, duplicate reports, and extreme outliers."*
+
+This pipeline solves that problem. It **automatically detects** whether your data is **Stock Prices** or **Company Financials**, then applies the right cleaning strategy for each.
+
+<div align="center">
+
+| 🎯 Goal | ✅ Result |
+|:--------|:---------|
+| Detect data type automatically | Stock OHLCV or SEC Fundamentals |
+| Clean errors intelligently | No fake data, no blind deletion |
+| Flag real market events | Crashes ≠ Errors |
+| Generate visual insights | 6-panel EDA figure |
+| Save clean output | `df_clean.csv` ready for ML |
+
+</div>
+
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🟢 Stock Price Mode
+- 📅 Auto datetime parsing
+- 💲 Forward-fill prices
+- 📊 Median imputation for Volume
+- 🚫 Removes illogical rows (`High < Low`, `Price ≤ 0`)
+- 🚩 Flags outliers with IQR + Z-Score
+- 🛡️ **Never deletes real crashes**
+
+</td>
+<td width="50%">
+
+### 🔵 SEC Fundamentals Mode
+- 🏢 Handles restated filings
+- 🔄 Unifies changing revenue tags
+- 📉 Derives Q4 = FY − (Q1+Q2+Q3)
+- 🧮 Calculates YoY Growth & Margins
+- ⚠️ Keeps structural nulls as-is
+- 🎯 Flags revenue & growth outliers
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🛠️ Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/financial-eda-pipeline.git
+cd financial-eda-pipeline
+
+# Install dependencies
 pip install pandas numpy matplotlib seaborn scipy
-2. Run the Script
+🚀 Usage
+Basic Run
 bash
 python eda_pipeline.py
-Or specify a custom file path:
-
+Custom File Path
 bash
 python eda_pipeline.py path/to/your/data.csv
+Expected Folder Structure
+text
+📦 financial-eda-pipeline
+ ┣ 📜 eda_pipeline.py
+ ┣ 📂 Dataset
+ ┃ ┗ 📄 financial_facts.csv
+ ┣ 📄 df_clean.csv          ← generated
+ ┗ 📄 eda_figure.png        ← generated
 🧠 How It Works
-Step 1: Load & Detect
-Reads the CSV file.
 
-Prints a summary (rows, columns, missing values, duplicates).
 
-Auto-detects the data type:
 
-If columns Date, Close, Volume exist → Stock Price Mode.
 
-Otherwise → SEC Fundamentals Mode.
 
-Step 2: Clean the Data
-🟢 Stock Price Mode
-Issue	Solution
-Missing prices	Forward-fill (last known price)
-Missing volume	Fill with median
-Price ≤ 0 or High < Low	Delete row (impossible data)
-Volume spikes	Flag with IQR + Z-Score
-Price crashes (>5σ)	Flag only — never delete real events
-🔵 SEC Fundamentals Mode
-Issue	Solution
-Missing dates	Leave empty (structural, not an error)
-Duplicate filings	Keep the latest filed value
-Conflicting values	Use the most recent restatement
-Missing Q4	Calculate: FY - (Q1 + Q2 + Q3)
-Revenue tag changes	Unify different tags into one series
-Revenue outliers	Flag with IQR + Z-Score
-Step 3: Descriptive Statistics
-Calculates mean, median, std, skewness, and kurtosis. Prints a plain-English interpretation.
 
-Step 4: Visualization
-Generates a 6-panel figure (eda_figure.png):
 
-Histogram of main variable
 
-Histogram of secondary variable
 
-Box plot of secondary variable
 
-Box plot of returns/growth
 
-Time series of main variable
+Step-by-Step Breakdown
+<details> <summary><b>📥 Step 1 — Load & Detect</b> (click to expand)</summary>
+Reads the CSV file using pandas.
 
-Time series of secondary variable
+Prints shape, dtypes, missing %, and duplicate count.
 
-Step 5: Output
-Saves the cleaned DataFrame to df_clean.csv.
+Auto-detects data type based on column names.
 
-🎯 Key Design Decisions
-✅ Flag, Don't Delete: Extreme values in finance are usually real events (crashes, earnings surprises). We mark them, not remove them.
+</details><details> <summary><b>🧹 Step 2 — Clean the Data</b> (click to expand)</summary>
+Stock Mode:
 
-✅ No Fake Data: We never invent dates or financial periods. Missing structural data stays missing.
+Issue	Action
+Missing prices	Forward-fill
+Missing volume	Median
+High < Low	Delete
+Volume spikes	Flag only
+Price crashes (>5σ)	Flag only
+SEC Mode:
 
-✅ Latest Restated Values: When companies re-file reports, we use the newest version.
+Issue	Action
+Duplicate filings	Keep latest
+Conflicting values	Use restatement
+Missing Q4	Calculate
+Revenue tag change	Unify
+</details><details> <summary><b>📊 Step 3 — Statistics</b> (click to expand)</summary>
+Calculates: Mean, Median, Std, Skewness, Kurtosis
+Prints plain-English interpretation of distribution shape.
 
-✅ Smart Imputation: We use ffill for prices (valid until changed) but median for volume (ffill would invent trades).
+</details><details> <summary><b>📈 Step 4 — Visualize</b> (click to expand)</summary>
+Generates a 6-panel figure:
 
-📊 Output Files
-File	Description
-df_clean.csv	Cleaned dataset ready for analysis
-eda_figure.png	6-panel visualization of key patterns
-🛠️ Requirements
-Python 3.8+
+Histogram — Main variable
 
-pandas
+Histogram — Secondary variable
 
-numpy
+Box plot — Secondary variable
 
-matplotlib
+Box plot — Returns / Growth
 
-seaborn
+Time series — Main variable
 
-scipy
+Time series — Secondary variable
 
-📝 Example Output
+</details><details> <summary><b>💾 Step 5 — Output</b> (click to expand)</summary>
+Saves df_clean.csv
+
+Prints final shape and first 5 rows
+
+</details>
+📊 Sample Output
 text
 Shape: (5000, 7)
 Detected mode: PRICE (OHLCV)
@@ -127,16 +169,55 @@ Descriptive statistics:
 Close      152.34    150.21   25.67    0.45    1.23
 Volume   5234123   4100000  2.1e6    2.87    9.45
 
-Close: skew=0.45 (roughly symmetric), excess kurtosis=1.23 (fat tails / shock-prone)
-💡 Why This Project Matters
-Saves Time: Automates hours of manual data cleaning.
+Close: skew=0.45 (roughly symmetric), 
+       excess kurtosis=1.23 (fat tails / shock-prone)
+🎯 Key Design Decisions
+<div align="center">
+✅ Principle	💡 Why
+Flag, Don't Delete	Extreme values in finance are real events, not errors
+No Fake Data	Missing structural values stay missing
+Latest Restated Values	Companies re-file reports; use the newest
+Smart Imputation	ffill for prices, median for volume
+</div>
+📁 Output Files
+📄 File	📝 Description
+df_clean.csv	Cleaned dataset ready for analysis
+eda_figure.png	6-panel visualization of key patterns
+🧰 Tech Stack
+<div align="center">
+https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white
+https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white
+https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white
+https://img.shields.io/badge/Matplotlib-11557c?style=flat-square&logo=python&logoColor=white
+https://img.shields.io/badge/Seaborn-3776AB?style=flat-square&logo=python&logoColor=white
+https://img.shields.io/badge/SciPy-8CAAE6?style=flat-square&logo=scipy&logoColor=white
 
-Model-Ready: Output is ready for machine learning without distortion.
+</div>
+🤝 Contributing
+Contributions are welcome! Feel free to:
 
-Domain-Aware: Understands that financial outliers are often real events, not errors.
+🍴 Fork the repository
 
-📧 Contact
-[AbdallaMohamed] — abdallamohamed8354@gmail.com
+🌿 Create a feature branch
+
+💾 Commit your changes
+
+🚀 Push and open a Pull Request
 
 📜 License
-MIT License — free to use and modify.
+This project is licensed under the MIT License — free to use and modify.
+
+📧 Contact
+<div align="center">
+Your Name
+
+https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white
+https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
+https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
+
+</div>
+<div align="center">
+⭐ If you found this project useful, please give it a star!
+Made with ❤️ and Python
+
+</div> ```
