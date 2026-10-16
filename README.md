@@ -146,7 +146,7 @@ Flag, Don't Delete	Extreme values in finance are real events, not errors
 No Fake Data	Missing structural values stay missing
 Latest Restated Values	Companies re-file reports; use the newest
 Smart Imputation	ffill for prices, median for volume
-</div>
+ 
 📁 Output Files
 📄 File	📝 Description
 df_clean.csv	Cleaned dataset ready for analysis
@@ -168,9 +168,5 @@ This project is licensed under the MIT License — free to use and modify.
 
 📧 Contact
 <div align="center">
-
-https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white
-https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
-https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
 
 ⭐ If you found this project useful, please give it a star!
